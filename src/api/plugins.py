@@ -100,7 +100,7 @@ class Plugin:
 
 
 class PluginImport(Plugin):
-    def __init__(self, name: str, description: str):
+    def __init__(self, name: str, description: str, supported_formats: List[str]):
         pass
 
     @abc.abstractmethod
@@ -122,7 +122,7 @@ class VisualizeType(Enum):
 
 
 class PluginVisualize(Plugin):
-    def __init__(self, name: str, description: str, supported_formats: List[str]):
+    def __init__(self, name: str, description: str, visualize_type: VisualizeType):
         pass
 
     @abc.abstractmethod
