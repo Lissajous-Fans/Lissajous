@@ -23,13 +23,13 @@ class PluginOption:
     option_type: PluginOptionType
     default_value: Any
 
+    def __hash__(self) -> int:
+        return hash(self.name)
+
 
 class PluginOptionBool(PluginOption):
     def __init__(self, name: str, default_value: bool = False):
         super().__init__(name, PluginOptionType.BOOL, default_value)
-
-    def __bool__(self):
-        return self.value
 
 
 class PluginOptionInt(PluginOption):
@@ -78,10 +78,6 @@ class PluginOptionColor(PluginOption):
 class PluginOptionGroup:
     name: str
     items: List[PluginOption]
-
-
-class VisualizeMethod:
-    pass
 
 
 class Plugin:
