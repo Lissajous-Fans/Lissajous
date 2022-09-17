@@ -1,13 +1,18 @@
-from typing import Any, List, Optional
-from enum import Enum, IntFlag
 from dataclasses import dataclass
+from enum import Enum, auto
+from io import BytesIO
+from typing import Any, List, Optional, Tuple
+
+from pandas import DataFrame
 
 
 class PluginOptionType(Enum):
-    INT = 1,
-    BOOL = 2,
-    STRING = 3,
-    COMBO_BOX = 4
+    INT = auto()
+    FLOAT = auto()
+    BOOL = auto()
+    STRING = auto()
+    COMBO_BOX = auto()
+    COLOR = auto()
 
 
 class PluginOption:
@@ -32,15 +37,27 @@ class PluginOptionBool(PluginOption):
 
 
 class PluginOptionInt(PluginOption):
-    class Hints(IntFlag):
-        ANY = 0
-        POSITIVE = 1
+    min_value: Optional[int]
+    max_value: Optional[int]
 
-    hints: Hints
-
-    def __init__(self, name: str, default_value: int = 0, hints: Hints = Hints.ANY):
+    def __init__(self, name: str, default_value: int = 0,
+                 min_value: Optional[int] = None,
+                 max_value: Optional[int] = None):
         super().__init__(name, PluginOptionType.INT, default_value)
-        self.hints = hints
+        self.min_value = min_value
+        self.max_value = max_value
+
+
+class PluginOptionFloat(PluginOption):
+    min_value: Optional[float]
+    max_value: Optional[float]
+
+    def __init__(self, name: str, default_value: float = 0,
+                 min_value: Optional[float] = None,
+                 max_value: Optional[float] = None):
+        super().__init__(name, PluginOptionType.FLOAT, default_value)
+        self.min_value = min_value
+        self.max_value = max_value
 
 
 class PluginOptionString(PluginOption):
@@ -56,6 +73,11 @@ class PluginOptionComboBox(PluginOption):
         self.items = items
 
 
+class PluginOptionColor(PluginOption):
+    def __init__(self, name: str, default_value: Tuple[int, int, int] = (0, 0, 0)):
+        super().__init__(name, PluginOptionType.COLOR, default_value)
+
+
 @dataclass
 class PluginOptionGroup:
     name: str
@@ -68,33 +90,39 @@ class VisualizeMethod:
 
 class Plugin:
     name: str
-    decription: str
+    description: str
     options: List[PluginOption | PluginOptionGroup]
+    implicit_options: List[PluginOption]
 
     def __init__(self, name: str, description: str, options: List[PluginOption | PluginOptionGroup]):
         self.name = name
-        self.decription = description
+        self.description = description
         self.options = options
+        self.implicit_options = []
 
 
 class PluginImport(Plugin):
-    pass
+    def __init__(self, name: str, description: str):
+        pass
+
+    def import_from(self, file_path: str) -> DataFrame:
+        pass
 
 
 class VisualizeType(Enum):
-    Map = 1,
-    Diagram = 2,
-    BarChart = 3,
-    PieChart = 4,
-    Table = 5,
-    LineGraph = 6,
-    Custom = 7,
-    Undefined = 8
+    Map = auto()
+    Diagram = auto()
+    BarChart = auto()
+    PieChart = auto()
+    Table = auto()
+    LineGraph = auto()
+    Custom = auto()
+    Undefined = auto()
 
 
 class PluginVisualize(Plugin):
-    pass
+    def __init__(self):
+        pass
 
-
-class PluginData(Plugin):
-    pass
+    def visualize(self, data: DataFrame) -> BytesIO:
+        pass
