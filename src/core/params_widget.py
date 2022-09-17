@@ -1,17 +1,14 @@
 # TODO: Аннотации типов API
 
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import QWidget, QListWidget, QListWidgetItem, QSpinBox
+from PyQt5.QtWidgets import QWidget, QListWidget, QListWidgetItem, QSpinBox, QLineEdit
 
-from src.core.param_field_widget import ParamFieldWidget
-from src.core.param_group_widget import ParamGroupWidget
 from src.api.plugins import (PluginOption,
                              PluginOptionGroup,
                              PluginOptionInt,
-                             PluginOptionString,
-                             PluginOptionBool,
-                             PluginOptionComboBox)
+                             PluginOptionBool, PluginOptionString)
+from src.core.param_item_widget import ParamItemWidget
+from src.core.param_group_widget import ParamGroupWidget
 
 
 def option_to_widget(option: PluginOption) -> tuple:
@@ -20,11 +17,14 @@ def option_to_widget(option: PluginOption) -> tuple:
         case x if isinstance(option, PluginOptionInt):
             w = QSpinBox()
             w.setRange(0, 100)
-            return w, w.valueChanged
+            return w, w.valueChanged, w.value
         case x if isinstance(option, PluginOptionBool):
             w = QSpinBox()
             w.setRange(0, 1)
-            return w, w.valueChanged
+            return w, w.valueChanged, lambda: bool(w.value())
+        case x if isinstance(option, PluginOptionString):
+            w = QLineEdit()
+            return w, w.textChanged, w.text
 
 
 class ParamsWidget(QListWidget):
@@ -33,19 +33,41 @@ class ParamsWidget(QListWidget):
     def __init__(self, params: list[PluginOption | PluginOptionGroup]):
         super().__init__()
         self._params = params
+        self._params_to_widget = {}
+        self._params_to_value_getter = {}
         self._configure_ui()
 
+    def drop_params(self):
+        self._params = []
+        self.clear()
+
     def _configure_ui(self):
-        for param in self._params:
+        self.load_params(self._params)
+
+    def load_params(self, params: list[PluginOption | PluginOptionGroup]):
+        for param in params:
             if isinstance(param, PluginOption):
-                self._fast_add(ParamFieldWidget(param.name, *option_to_widget(param)))
+                self._fast_add_param(param)
             elif isinstance(param, PluginOptionGroup):
                 group = ParamGroupWidget(param.name)
                 self._fast_add(group)
                 for p in param.items:
-                    w = ParamFieldWidget(p.name, *option_to_widget(p))
-                    group.register_child(w)
-                    self._fast_add(w)
+                    self._fast_add_param(p)
+                    group.register_child(self._params_to_widget[p])
+
+    def _handle_updating(self, *args, **kwargs):
+        self.params_updated.emit()
+
+    def get_params(self):
+        return {param: self._params_to_value_getter[param]() for param in self._params}
+
+    def _fast_add_param(self, param: PluginOption):
+        widget, callback, get_value = option_to_widget(param)
+        widget = ParamItemWidget(param.name, widget, callback)
+        self._params_to_value_getter[param] = get_value
+        self._params_to_widget[param] = widget
+        callback.connect(self._handle_updating)
+        self._fast_add(widget)
 
     def _fast_add(self, widget: QWidget):
         item = QListWidgetItem(self)

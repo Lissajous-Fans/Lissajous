@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout
 
 
-class ParamFieldWidget(QWidget):
+class ParamItemWidget(QWidget):
     param_updated = pyqtSignal()
 
     def __init__(self, name: str, widget: QWidget, updater: pyqtSignal):
@@ -20,3 +20,4 @@ class ParamFieldWidget(QWidget):
         self.grid.addWidget(self._label, 0, 0)
         self.grid.addWidget(self._widget, 0, 1)
         self.param_updated.connect(self._updater.emit)
+
