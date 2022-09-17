@@ -1,7 +1,8 @@
+import abc
 from dataclasses import dataclass
 from enum import Enum, auto
 from io import BytesIO
-from typing import Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from pandas import DataFrame
 
@@ -15,17 +16,11 @@ class PluginOptionType(Enum):
     COLOR = auto()
 
 
+@dataclass
 class PluginOption:
     name: str
     option_type: PluginOptionType
     default_value: Any
-    value: Any
-
-    def __init__(self, name: str, option_type: PluginOptionType, default_value: Optional[Any]):
-        self.name = name
-        self.option_type = option_type
-        self.dafault_value = default_value
-        self.value = self.default_value
 
 
 class PluginOptionBool(PluginOption):
@@ -89,23 +84,29 @@ class VisualizeMethod:
 
 
 class Plugin:
+    ParametersValues = Dict[PluginOption, Any]
     name: str
     description: str
     options: List[PluginOption | PluginOptionGroup]
-    implicit_options: List[PluginOption]
+    parameters: List[PluginOption | PluginOptionGroup]
 
-    def __init__(self, name: str, description: str, options: List[PluginOption | PluginOptionGroup]):
+    def __init__(self, name: str, description: str,
+                 options: List[PluginOption | PluginOptionGroup],
+                 parameters: List[PluginOption | PluginOptionGroup]):
         self.name = name
         self.description = description
-        self.options = options
-        self.implicit_options = []
+        self.options = []
+        self.parameters = []
 
 
 class PluginImport(Plugin):
     def __init__(self, name: str, description: str):
         pass
 
-    def import_from(self, file_path: str) -> DataFrame:
+    @abc.abstractmethod
+    def import_from(self, file_path: str, parameters: Plugin.ParametersValues) -> Optional[DataFrame]:
+        """Import `DataFrame` from file at `file_path`self.
+        Returns `None` if the file cannot be imported."""
         pass
 
 
@@ -121,8 +122,9 @@ class VisualizeType(Enum):
 
 
 class PluginVisualize(Plugin):
-    def __init__(self):
+    def __init__(self, name: str, description: str, supported_formats: List[str]):
         pass
 
-    def visualize(self, data: DataFrame) -> BytesIO:
+    @abc.abstractmethod
+    def visualize(self, data: DataFrame, parameters: Plugin.ParametersValues) -> BytesIO:
         pass
