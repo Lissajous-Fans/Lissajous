@@ -81,6 +81,17 @@ class PluginImport(Plugin):
     pass
 
 
+class VisualizeType(Enum):
+    Map = 1,
+    Diagram = 2,
+    BarChart = 3,
+    PieChart = 4,
+    Table = 5,
+    LineGraph = 6,
+    Custom = 7,
+    Undefined = 8
+
+
 class PluginVisualize(Plugin):
     pass
 
