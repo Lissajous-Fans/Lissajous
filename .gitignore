@@ -1,3 +1,2 @@
 .idea/
-
-.gitignore
+.mypy_cache/
