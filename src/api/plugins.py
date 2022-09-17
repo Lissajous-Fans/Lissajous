@@ -1,26 +1,26 @@
-from typing import Any, List, Optional
-from enum import Enum, IntFlag
+import abc
 from dataclasses import dataclass
+from enum import Enum, auto
+from io import BytesIO
+from typing import Any, Dict, List, Optional, Tuple
+
+from pandas import DataFrame
 
 
 class PluginOptionType(Enum):
-    INT = 1,
-    BOOL = 2,
-    STRING = 3,
-    COMBO_BOX = 4
+    INT = auto()
+    FLOAT = auto()
+    BOOL = auto()
+    STRING = auto()
+    COMBO_BOX = auto()
+    COLOR = auto()
 
 
+@dataclass
 class PluginOption:
     name: str
     option_type: PluginOptionType
     default_value: Any
-    value: Any
-
-    def __init__(self, name: str, option_type: PluginOptionType, default_value: Optional[Any]):
-        self.name = name
-        self.option_type = option_type
-        self.dafault_value = default_value
-        self.value = self.default_value
 
 
 class PluginOptionBool(PluginOption):
@@ -32,15 +32,27 @@ class PluginOptionBool(PluginOption):
 
 
 class PluginOptionInt(PluginOption):
-    class Hints(IntFlag):
-        ANY = 0
-        POSITIVE = 1
+    min_value: Optional[int]
+    max_value: Optional[int]
 
-    hints: Hints
-
-    def __init__(self, name: str, default_value: int = 0, hints: Hints = Hints.ANY):
+    def __init__(self, name: str, default_value: int = 0,
+                 min_value: Optional[int] = None,
+                 max_value: Optional[int] = None):
         super().__init__(name, PluginOptionType.INT, default_value)
-        self.hints = hints
+        self.min_value = min_value
+        self.max_value = max_value
+
+
+class PluginOptionFloat(PluginOption):
+    min_value: Optional[float]
+    max_value: Optional[float]
+
+    def __init__(self, name: str, default_value: float = 0,
+                 min_value: Optional[float] = None,
+                 max_value: Optional[float] = None):
+        super().__init__(name, PluginOptionType.FLOAT, default_value)
+        self.min_value = min_value
+        self.max_value = max_value
 
 
 class PluginOptionString(PluginOption):
@@ -56,6 +68,11 @@ class PluginOptionComboBox(PluginOption):
         self.items = items
 
 
+class PluginOptionColor(PluginOption):
+    def __init__(self, name: str, default_value: Tuple[int, int, int] = (0, 0, 0)):
+        super().__init__(name, PluginOptionType.COLOR, default_value)
+
+
 @dataclass
 class PluginOptionGroup:
     name: str
@@ -67,34 +84,47 @@ class VisualizeMethod:
 
 
 class Plugin:
+    ParametersValues = Dict[PluginOption, Any]
     name: str
-    decription: str
+    description: str
     options: List[PluginOption | PluginOptionGroup]
+    parameters: List[PluginOption | PluginOptionGroup]
 
-    def __init__(self, name: str, description: str, options: List[PluginOption | PluginOptionGroup]):
+    def __init__(self, name: str, description: str,
+                 options: List[PluginOption | PluginOptionGroup],
+                 parameters: List[PluginOption | PluginOptionGroup]):
         self.name = name
-        self.decription = description
-        self.options = options
+        self.description = description
+        self.options = []
+        self.parameters = []
 
 
 class PluginImport(Plugin):
-    pass
+    def __init__(self, name: str, description: str, supported_formats: List[str]):
+        pass
+
+    @abc.abstractmethod
+    def import_from(self, file_path: str, parameters: Plugin.ParametersValues) -> Optional[DataFrame]:
+        """Import `DataFrame` from file at `file_path`self.
+        Returns `None` if the file cannot be imported."""
+        pass
 
 
 class VisualizeType(Enum):
-    Map = 1,
-    Diagram = 2,
-    BarChart = 3,
-    PieChart = 4,
-    Table = 5,
-    LineGraph = 6,
-    Custom = 7,
-    Undefined = 8
+    Map = auto()
+    Diagram = auto()
+    BarChart = auto()
+    PieChart = auto()
+    Table = auto()
+    LineGraph = auto()
+    Custom = auto()
+    Undefined = auto()
 
 
 class PluginVisualize(Plugin):
-    pass
+    def __init__(self, name: str, description: str, visualize_type: VisualizeType):
+        pass
 
-
-class PluginData(Plugin):
-    pass
+    @abc.abstractmethod
+    def visualize(self, data: DataFrame, parameters: Plugin.ParametersValues) -> BytesIO:
+        pass
