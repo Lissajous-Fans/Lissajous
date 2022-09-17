@@ -39,6 +39,8 @@ class ParamsWidget(QListWidget):
 
     def drop_params(self):
         self._params = []
+        self._params_to_widget.clear()
+        self._params_to_value_getter.clear()
         self.clear()
 
     def _configure_ui(self):

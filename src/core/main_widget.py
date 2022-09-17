@@ -29,27 +29,21 @@ class MainWidget(QWidget):
         self._params_label = QLabel('Параметры отрисовки')
         self.grid.addWidget(self._params_label, 0, 1)
         self._params_widget = ParamsWidget([])
-        self.grid.addWidget(self._params_widget, 1, 1,)
+        self.grid.addWidget(self._params_widget, 1, 1, )
 
         self._image_label = QLabel()
         self.grid.addWidget(self._image_label, 0, 2)
 
     def _handle_plugin_picking(self, plugin_id: int):
-        self._current_plugin = self._plugins[plugin_id]
-        print(self._current_plugin)
         self._params_widget.drop_params()
+        self._current_plugin = self._plugins[plugin_id]
         self._params_widget.load_params(self._current_plugin.parameters)
         self._params_widget.params_updated.connect(lambda: self._update_visual(self._current_plugin))
         self._update_visual(self._current_plugin)
 
     def _update_visual(self, plugin: PluginVisualize):
-        try:
-            buffer = plugin.visualize(self._data, self._params_widget.get_params())
-            self._image_label.setPixmap(QPixmap().loadFromData(buffer))
-        except Exception as e:
-            print(e)
-            print(e.__traceback__)
-            self._image_label.clear()
+        buffer = plugin.visualize(self._data, self._params_widget.get_params())
+        self._image_label.setPixmap(QPixmap().loadFromData(buffer))
 
     def set_pixmap(self, image: QPixmap):
         self._image_label.setPixmap(image)

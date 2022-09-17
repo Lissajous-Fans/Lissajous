@@ -36,8 +36,9 @@ class MainWindow(QMainWindow):
 
         import_plugins = self.load_plugins_by_type(IMPORT_PLUGINS_CONTAINER)
         for plugin in import_plugins:
-            action = QAction(plugin().name, self)
-            action.triggered.connect(lambda: self._load_file(plugin()))
+            plugin = plugin()
+            action = QAction(plugin.name, self)
+            action.triggered.connect(lambda: self._load_file(plugin))
             self.open_menu.addAction(action)
 
     def load_plugins_by_type(self, plugin_type: str) -> list:
