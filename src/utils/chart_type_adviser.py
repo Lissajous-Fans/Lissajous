@@ -1,11 +1,13 @@
+from typing import List, Optional
 import pandas as pd
 
-import src.utils.ChartAdvices as advices
-from src.utils.ChartAdvices import ChartAdvice
+import src.utils.chart_advices as advices
+from src.utils.chart_advices import ChartAdvice
 
 
 class ChartTypeAdviser:
-    def __search_for_linear_chart(self, table: pd.DataFrame) -> advices.LineGraphAdvice:
+    @staticmethod
+    def __search_for_linear_chart(table: pd.DataFrame) -> Optional[advices.LineGraphAdvice]:
         is_int = [[False for i in range(len(table))] for j in range(len(table.columns))]
         for i in range(len(table.columns)):
             for j in range(len(table)):
@@ -42,7 +44,8 @@ class ChartTypeAdviser:
         else:
             return None
 
-    def __search_for_bar_chart(self, table: pd.DataFrame) -> advices.BarChartAdvice:
+    @staticmethod
+    def __search_for_bar_chart(table: pd.DataFrame) -> Optional[advices.BarChartAdvice]:
         is_int = [[False for i in range(len(table))] for j in range(len(table.columns))]
         is_str = [[False for i in range(len(table))] for j in range(len(table.columns))]
         for i in range(len(table.columns)):
@@ -93,17 +96,22 @@ class ChartTypeAdviser:
                         mx_i = i
                         mx_j = j
 
-        if mxln > 3:
+        if mxln >= 3:
             return advices.BarChartAdvice(mx_i - (mx_s - 1) - 1, mx_i, mx_j - mxln + 1, mx_j)
         else:
             return None
 
-    def get_advices(self, table:pd.DataFrame) -> [ChartAdvice]:
+    @staticmethod
+    def get_advices(table: pd.DataFrame) -> List[ChartAdvice]:
         result = []
-        i = self.__search_for_linear_chart(table)
+        i = ChartTypeAdviser.__search_for_linear_chart(table)
         if i is not None:
             result.append(i)
-        i = self.__search_for_bar_chart(table)
+        i = ChartTypeAdviser.__search_for_bar_chart(table)
         if i is not None:
             result.append(i)
         return result
+
+
+table = pd.read_csv("src/utils/test.csv", index_col=None, header=None)
+# advicer = ChartTypeAdviser.get_advices(table)
