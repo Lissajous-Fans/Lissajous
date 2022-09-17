@@ -1,10 +1,8 @@
-from PyQt5 import uic
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QStandardItem
 from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout
 
 
-class ParamFieldWidget(QStandardItem):
+class ParamFieldWidget(QWidget):
     param_updated = pyqtSignal()
 
     def __init__(self, name: str, widget: QWidget, updater: pyqtSignal):
@@ -15,6 +13,10 @@ class ParamFieldWidget(QStandardItem):
         self._configure_ui()
 
     def _configure_ui(self):
-        self.setText(self._name)
-        self._updater.connect(self.param_updated.emit())
-        self.setData(self._widget)
+        print(self._name)
+        self.grid = QGridLayout(self)
+        self.setLayout(self.grid)
+        self._label = QLabel(self._name)
+        self.grid.addWidget(self._label, 0, 0)
+        self.grid.addWidget(self._widget, 0, 1)
+        self.param_updated.connect(self._updater.emit)
