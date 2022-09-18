@@ -16,7 +16,13 @@ class PlotViewPlugin(PluginQtVisualize):
         )
 
     def visualize(self, data: pd.DataFrame, params: Plugin.OptionsValues) -> QWidget:
-        return QPushButton('asfdf')
+        series = QLineSeries()
+        series << QPointF(0.0, 1.0) << QPointF(2.0, 3.0) << QPointF(4.0, -1.0)
+        chart = QChart()
+        chart.addSeries(series)
+        chart.createDefaultAxes()
+        chart.setTitle("Just title")
+        return QChartView(chart)
 
 
 __visual_plugins__ = [PlotViewPlugin]
