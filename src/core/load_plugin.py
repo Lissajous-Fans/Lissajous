@@ -12,7 +12,8 @@ def load_all() -> Tuple[List[PluginImport], List[PluginVisualize]]:
     for plugin_script_path in Path("plugins/").glob("*.py"):
         try:
             for plugin in import_module(
-                f"plugins.{plugin_script_path.name.removesuffix('.py')}", "*").__dict__.get("__plugins__", []):
+                f"plugins.{plugin_script_path.name.removesuffix('.py')}", "*"
+            ).__dict__.get("__plugins__", []):
                 if isinstance(plugin, PluginImport):
                     result[0].append(plugin)
                 elif isinstance(plugin, PluginVisualize):
