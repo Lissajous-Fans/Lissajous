@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QListWidget, QListWidgetItem
 
-from src.api.plugins import Plugin, PluginVisualize
+from src.api import Plugin, PluginVisualize
 from .plugin_item_widget import PluginItemWidget
 
 

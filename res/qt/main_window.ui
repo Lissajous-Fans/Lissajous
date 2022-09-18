@@ -48,7 +48,6 @@
      <property name="separatorsCollapsible">
       <bool>false</bool>
      </property>
-     <addaction name="load_csv"/>
     </widget>
     <widget class="QMenu" name="menu_3">
      <property name="title">
@@ -77,11 +76,6 @@
   <action name="action_5">
    <property name="text">
     <string>Открыть папку</string>
-   </property>
-  </action>
-  <action name="load_csv">
-   <property name="text">
-    <string>Таблица из .csv</string>
    </property>
   </action>
  </widget>

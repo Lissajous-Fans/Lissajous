@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QListWidget, QLabel
 
 from .plugins_widget import PluginsWidget
 from .params_widget import ParamsWidget
-from src.api.plugins import Plugin, PluginQtVisualize
+from src.api import Plugin, PluginQtVisualize
 
 
 class MainWidget(QWidget):

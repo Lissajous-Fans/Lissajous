@@ -4,7 +4,7 @@ from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtWidgets import QDialog, QGridLayout, QPushButton, QLabel, QFileDialog
 
 from .params_widget import ParamsWidget
-from src.api.plugins import PluginOption, PluginImport
+from src.api import PluginOption, PluginImport
 
 
 class FileLoaderDialog(QDialog):
