@@ -4,7 +4,7 @@ import os
 import pandas as pd
 from PyQt5 import uic
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QMainWindow, QAction, QMenuBar)
+from PyQt5.QtWidgets import (QMainWindow, QAction, QMenu)
 
 from .main_widget import MainWidget
 from src.api.plugins import PluginVisualize, PluginImport
@@ -25,10 +25,6 @@ class MainWindow(QMainWindow):
     def _configure_ui(self):
         uic.loadUi('./res/qt/main_window.ui', self)
         self.setWindowIcon(QIcon("./res/icon.png"))
-
-        self.setMenuBar(QMenuBar(self))
-        self.file_menu = self.menuBar().addMenu('Файл')
-        self.open_menu = self.file_menu.addMenu('Открыть')
 
         visual_plugins = self.load_plugins_by_type(VISUAL_PLUGINS_CONTAINER)
         for plugin in visual_plugins:
