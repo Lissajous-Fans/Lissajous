@@ -6,6 +6,7 @@ from .plugins_widget import PluginsWidget
 from .params_widget import ParamsWidget
 from src.api import Plugin, PluginQtVisualize
 
+import traceback
 
 class MainWidget(QWidget):
     def __init__(self, data: pd.DataFrame, plugins: list[PluginQtVisualize] = None):
@@ -49,7 +50,7 @@ class MainWidget(QWidget):
             self._image_label.show()
             self.grid.addWidget(self._image_label, 1, 2)
         except KeyError as e:
-            print(f'KeyError: {e}')
+            traceback.print_exc()
 
     def set_pixmap(self, image: QPixmap):
         self._image_label.setPixmap(image)
