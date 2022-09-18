@@ -7,7 +7,7 @@ setup(name="lissapi",
       author=AUTHOR,
       packages=["lissapi"],
       install_requires=["PyQt5", "pyqtchart", "pandas"],
-      package_dir={"lissapi": "src/api/"})
+      package_dir={"lissapi": "src/api"})
 
 # setup(name="Lissajous",
 #       version="0.1.1",
