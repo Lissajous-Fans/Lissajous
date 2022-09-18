@@ -12,7 +12,7 @@ from .file_loader_dialog import FileLoaderDialog
 from .navigation_widget import NavigationWidget
 from .params_widget import ParamsWidget
 from .visualizing_widget import VisualizingWidget
-
+from .load_plugin import load_all as load_plugins
 
 PLUGINS_FOLDER = './plugins/'
 VISUAL_PLUGINS_CONTAINER = '__visual_plugins__'
@@ -31,14 +31,7 @@ class MainWindow(QMainWindow):
         self._configure_menu()
 
     def _load_plugins(self):
-        import_plugins = []
-        visual_plugins = []
-        for file in list(os.walk(PLUGINS_FOLDER))[0][2]:
-            d = importlib.import_module(f'plugins.{file.rstrip(".py")}').__dict__
-            import_plugins.extend(d[IMPORT_PLUGINS_CONTAINER])
-            visual_plugins.extend(d[VISUAL_PLUGINS_CONTAINER])
-        self._visual_plugins = list(map(lambda x: x(), visual_plugins))
-        self._import_plugins = list(map(lambda x: x(), import_plugins))
+        self._import_plugins, self._visual_plugins = load_plugins()
 
     def _configure_menu(self):
         self.open_menu = self.file_menu.addMenu('Открыть')
