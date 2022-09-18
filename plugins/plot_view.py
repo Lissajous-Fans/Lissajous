@@ -4,7 +4,7 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QWidget, QPushButton
 from PyQt5.QtChart import QChart, QChartView, QLineSeries
 
-from src.api import PluginQtVisualize, Plugin, VisualizeType
+from api.plugins import PluginQtVisualize, Plugin, VisualizeType
 
 
 class PlotViewPlugin(PluginQtVisualize):
@@ -16,13 +16,7 @@ class PlotViewPlugin(PluginQtVisualize):
         )
 
     def visualize(self, data: pd.DataFrame, params: Plugin.OptionsValues) -> QWidget:
-        series = QLineSeries()
-        series << QPointF(0.0, 1.0) << QPointF(2.0, 3.0) << QPointF(4.0, -1.0)
-        chart = QChart()
-        chart.addSeries(series)
-        # chart.createDefaultAxes()
-        chart.setTitle("Just title")
-        return QChartView(chart)
+        return QPushButton('asfdf')
 
 
 __visual_plugins__ = [PlotViewPlugin]
