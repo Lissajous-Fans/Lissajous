@@ -17,6 +17,5 @@ class ImportFromExcelFile(PluginImport):
         return pd.read_excel(file_path, index_col=None, header=None)
 
 
-
 __import_plugins__ = [ImportFromExcelFile]
 __visual_plugins__ = []

@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QListWidget, QListWidgetItem
 
-from src.api import Plugin, PluginVisualize
+from src.api.plugins import Plugin, PluginVisualize
 from .plugin_item_widget import PluginItemWidget
 
 
@@ -10,7 +10,6 @@ class PluginsWidget(QListWidget):
 
     def __init__(self, plugins: list[PluginVisualize]):
         super().__init__()
-        print(plugins)
         self._plugins = plugins
         self._configure_ui()
 

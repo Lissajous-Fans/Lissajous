@@ -1,9 +1,9 @@
-from PyQt5.QtCore import QModelIndex
+import pandas as pd
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import QWidget, QTableView
 
 from src.api.plugins import PluginQtVisualize, Plugin, VisualizeType
-import pandas as pd
-from PyQt5.QtWidgets import QWidget, QTableView
-from PyQt5 import QtCore
+
 
 class PlotViewPlugin(PluginQtVisualize):
     def __init__(self):
@@ -18,6 +18,7 @@ class PlotViewPlugin(PluginQtVisualize):
         table = QTableView()
         table.setModel(model)
         return table
+
 
 class DataFrameModel(QtCore.QAbstractTableModel):
     DtypeRole = QtCore.Qt.UserRole + 1000
@@ -79,6 +80,7 @@ class DataFrameModel(QtCore.QAbstractTableModel):
             DataFrameModel.ValueRole: b'value'
         }
         return roles
+
 
 __visual_plugins__ = [PlotViewPlugin]
 __import_plugins__ = []

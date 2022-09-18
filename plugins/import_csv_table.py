@@ -17,6 +17,5 @@ class ImportCsvTablePlugin(PluginImport):
         return pd.read_csv(file_path, index_col=None, header=None)
 
 
-
 __import_plugins__ = [ImportCsvTablePlugin]
 __visual_plugins__ = []

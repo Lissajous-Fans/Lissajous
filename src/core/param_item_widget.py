@@ -13,7 +13,6 @@ class ParamItemWidget(QWidget):
         self._configure_ui()
 
     def _configure_ui(self):
-        print(self._name)
         self.grid = QGridLayout(self)
         self.setLayout(self.grid)
         self._label = QLabel(self._name)

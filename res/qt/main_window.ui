@@ -6,68 +6,62 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>772</width>
+    <height>547</height>
    </rect>
   </property>
   <property name="font">
    <font>
-    <pointsize>12</pointsize>
+    <pointsize>10</pointsize>
    </font>
   </property>
   <property name="windowTitle">
    <string>Lissajous</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar">
+  <property name="documentMode">
+   <bool>true</bool>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
+  <property name="dockNestingEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowNestedDocks</set>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>34</height>
+     <width>772</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="file_menu">
-    <property name="tearOffEnabled">
-     <bool>false</bool>
-    </property>
     <property name="title">
      <string>Файл</string>
     </property>
-    <property name="separatorsCollapsible">
-     <bool>false</bool>
-    </property>
-    <property name="toolTipsVisible">
-     <bool>false</bool>
-    </property>
-    <widget class="QMenu" name="open_menu">
-     <property name="title">
-      <string>Открыть</string>
-     </property>
-     <property name="separatorsCollapsible">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QMenu" name="menu_3">
-     <property name="title">
-      <string>Плагины</string>
-     </property>
-     <addaction name="action_4"/>
-     <addaction name="action_5"/>
-    </widget>
-    <addaction name="open_menu"/>
-    <addaction name="menu_3"/>
    </widget>
-   <widget class="QMenu" name="menu_2">
+   <widget class="QMenu" name="settings_menu">
     <property name="title">
      <string>Настройки</string>
     </property>
    </widget>
+   <widget class="QMenu" name="export_menu">
+    <property name="title">
+     <string>Экспорт</string>
+    </property>
+   </widget>
    <addaction name="file_menu"/>
-   <addaction name="menu_2"/>
+   <addaction name="settings_menu"/>
+   <addaction name="export_menu"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="action_4">
    <property name="text">
     <string>Загрузить</string>
@@ -76,6 +70,21 @@
   <action name="action_5">
    <property name="text">
     <string>Открыть папку</string>
+   </property>
+  </action>
+  <action name="load_csv">
+   <property name="text">
+    <string>Таблица из .csv</string>
+   </property>
+  </action>
+  <action name="open_menu">
+   <property name="text">
+    <string>Открыть</string>
+   </property>
+  </action>
+  <action name="plugin_menu">
+   <property name="text">
+    <string>Плагины</string>
    </property>
   </action>
  </widget>
