@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QModelIndex
 
-from src.api.plugins import PluginQtVisualize, Plugin, VisualizeType
+from lissapi import PluginQtVisualize, Plugin, VisualizeType
 import pandas as pd
 from PyQt5.QtWidgets import QWidget, QTableView
 from PyQt5 import QtCore

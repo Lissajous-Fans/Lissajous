@@ -1,7 +1,6 @@
 import abc
 from enum import Enum, auto
-from io import BytesIO
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from PyQt5.QtWidgets import QWidget
 from pandas import DataFrame
@@ -32,7 +31,9 @@ class PluginImport(Plugin):
         self.supported_formats = supported_formats
 
     @abc.abstractmethod
-    def import_from(self, file_path: str, parameters: Plugin.OptionsValues) -> Optional[DataFrame]:
+    def import_from(
+        self, file_path: str, parameters: Plugin.OptionsValues
+    ) -> Optional[DataFrame]:
         """Import `DataFrame` from file at `file_path`self.
         Returns `None` if the file cannot be imported."""
         pass
@@ -49,16 +50,34 @@ class VisualizeType(Enum):
     Undefined = auto()
 
 
-class PluginQtVisualize(Plugin):
+class PluginVisualize(Plugin):
     visualize_type: VisualizeType
 
-    def __init__(self, name: str, description: str, visualize_type: VisualizeType):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        visualize_type: VisualizeType,
+        export_formats: List[str] = [],
+    ):
         super().__init__(name, description)
         self.visualize_type = visualize_type
 
     @abc.abstractmethod
-    def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> Optional[QWidget]:
+    def visualize(
+        self, data: DataFrame, parameters: Plugin.OptionsValues
+    ) -> Optional[QWidget | Tuple[QWidget, Any]]:
+        pass
+
+    @abc.abstractmethod
+    def export_to(
+        self,
+        file_path: str,
+        data: DataFrame,
+        visualized_data: Any,
+        parameters: Plugin.OptionsValues,
+    ) -> bool:
         pass
 
 
-PluginVisualize = PluginQtVisualize
+PluginQtVisualize = PluginVisualize

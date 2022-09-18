@@ -1,11 +1,11 @@
 from PyQt5.QtCore import QModelIndex
 
-from lissapi import PluginQtVisualize, Plugin, VisualizeType
+from lissapi import PluginVisualize, Plugin, VisualizeType
 import pandas as pd
 from PyQt5.QtWidgets import QWidget, QTableView
 from PyQt5 import QtCore
 
-class PlotViewPlugin(PluginQtVisualize):
+class PlotViewPlugin(PluginVisualize):
     def __init__(self):
         super().__init__(
             "Table display",

@@ -4,10 +4,10 @@ from PyQt5.QtGui import QColorConstants, QColor, QPen
 from PyQt5.QtWidgets import QWidget, QPushButton, QGraphicsSceneMouseEvent, QColorDialog
 from PyQt5.QtChart import QChart, QChartView, QLineSeries
 
-from lissapi import PluginQtVisualize, Plugin, VisualizeType, PluginOptionInt
+from lissapi import PluginVisualize, Plugin, VisualizeType, PluginOptionInt
 
 
-class PlotViewPlugin(PluginQtVisualize):
+class PlotViewPlugin(PluginVisualize):
     def __init__(self):
         super().__init__(
             "Simple Line Graph View",
