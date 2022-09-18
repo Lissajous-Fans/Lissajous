@@ -19,7 +19,7 @@ class MapView(PluginQtVisualize):
     
     @staticmethod
     def paintCountry(id, color, svg_):
-        elm = svg_.find(f'''.//*[@id='{id}']''' )
+        elm = svg_.find(f'''.//*[@id='{id}']''')
         elm.attrib['fill'] = f'{color}'
         elm.attrib['style'] = ''
 

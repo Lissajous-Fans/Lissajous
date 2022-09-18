@@ -49,18 +49,6 @@ class VisualizeType(Enum):
     Undefined = auto()
 
 
-class PluginVisualize(Plugin):
-    visualize_type: VisualizeType
-
-    def __init__(self, name: str, description: str, visualize_type: VisualizeType):
-        super().__init__(name, description)
-        self.visualize_type = visualize_type
-
-    @abc.abstractmethod
-    def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> Optional[BytesIO]:
-        pass
-
-
 class PluginQtVisualize(Plugin):
     visualize_type: VisualizeType
 
@@ -71,3 +59,6 @@ class PluginQtVisualize(Plugin):
     @abc.abstractmethod
     def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> Optional[QWidget]:
         pass
+
+
+PluginVisualize = PluginQtVisualize
