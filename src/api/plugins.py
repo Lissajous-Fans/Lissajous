@@ -8,6 +8,12 @@ from pandas import DataFrame
 from .options import *
 
 
+class PluginType(Enum):
+    VISUALIZE = auto()
+    IMPORT = auto()
+    CUSTOM = auto()
+
+
 class Plugin:
     OptionsValues = Dict[PluginOption, Any]
     name: str
@@ -15,19 +21,21 @@ class Plugin:
     options: List[PluginOption | PluginOptionGroup]
     options_values: OptionsValues
     parameters: List[PluginOption | PluginOptionGroup]
+    plugin_type: PluginType
 
-    def __init__(self, name: str, description: str):
+    def __init__(self, name: str, description: str, plugin_type: PluginType = PluginType.CUSTOM):
         self.name = name
         self.description = description
         self.options = []
         self.parameters = []
+        self.plugin_type = plugin_type
 
 
 class PluginImport(Plugin):
     supported_formats: List[str]
 
     def __init__(self, name: str, description: str, supported_formats: List[str]):
-        super().__init__(name, description)
+        super().__init__(name, description, PluginType.IMPORT)
         self.supported_formats = supported_formats
 
     @abc.abstractmethod
@@ -60,7 +68,7 @@ class PluginVisualize(Plugin):
         visualize_type: VisualizeType,
         export_formats: List[str] = [],
     ):
-        super().__init__(name, description)
+        super().__init__(name, description, PluginType.VISUALIZE)
         self.visualize_type = visualize_type
 
     @abc.abstractmethod

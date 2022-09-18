@@ -9,7 +9,7 @@ from PyQt5.QtCore import Qt
 
 class PieChartViewPlugin(PluginVisualize):
     def __init__(self):
-        super().__init__("Pie Chart View", "No description", VisualizeType.PieChart)
+        super().__init__("Pie Chart View", "No description", VisualizeType.PieChart, [])
 
     @staticmethod
     def handle_howered(slice: QPieSlice, state: bool, checked_slices: Set[QPieSlice]):

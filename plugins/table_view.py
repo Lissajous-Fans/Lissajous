@@ -88,4 +88,4 @@ class DataFrameModel(QtCore.QAbstractTableModel):
         return roles
 
 
-__plugin__ = [""]
+__plugins__ = []

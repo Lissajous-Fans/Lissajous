@@ -2,7 +2,7 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import ElementTree as XMLTree
 
 import pycountry
-from lissapi import (
+from src.api import (
     Plugin,
     PluginOptionColor,
     PluginVisualize,
@@ -17,11 +17,12 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QTemporaryFile, Qt
 
 
-class MapView(PluginVisualize):
+class MapViewPlugin(PluginVisualize):
     def __init__(self):
         super().__init__("Map View", "No description", VisualizeType.Map, ["*.svg"])
+        print("Map View loading")
         self.param_color = PluginOptionColor("Gradient Color")
-        # self.parameters.extend([self.param_color])
+        self.parameters.extend([self.param_color])
 
     @staticmethod
     def fill_country(id, color, svg):
@@ -39,7 +40,7 @@ class MapView(PluginVisualize):
         for rx in range(1, sales.shape[0]):
             try:
                 country = pycountry.countries.get(name=sales.iat[rx, 0])
-                MapView.fill_country(
+                MapViewPlugin.fill_country(
                     country.alpha_2,
                     color.darker(
                         int((float(sales.iat[rx, 1]) - mn) / raz * 200)
@@ -54,7 +55,7 @@ class MapView(PluginVisualize):
     ) -> Tuple[QWidget, XMLTree]:
         et = ElementTree.parse("res/world.svg")
         color = QColor(200, 0, 100) # parameters[self.param_color]
-        MapView.paint_countries_one_color(data, QColor(255, 0, 0), et)
+        MapViewPlugin.paint_countries_one_color(data, QColor(255, 0, 0), et)
         temp_file = QTemporaryFile()
         temp_file.open()
         path = temp_file.fileName()
@@ -74,6 +75,4 @@ class MapView(PluginVisualize):
         return True
 
 
-__plugins__ = [MapView()]
-__import_plugins__ = []
-__visual_plugins__ = [MapView]
+__plugins__ = [MapViewPlugin()]

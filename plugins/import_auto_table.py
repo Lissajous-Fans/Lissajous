@@ -4,8 +4,7 @@ from typing import Optional
 
 from pandas import DataFrame
 
-from src.api import Plugin
-from src.api import PluginImport
+from src.api import Plugin, PluginImport
 
 
 class ImportPandasLikeTable(PluginImport):
@@ -27,5 +26,3 @@ class ImportPandasLikeTable(PluginImport):
 
 
 __plugins__ = [ImportPandasLikeTable()]
-__import_plugins__ = [ImportPandasLikeTable]
-__visual_plugins__ = []

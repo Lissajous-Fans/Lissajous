@@ -44,6 +44,6 @@ class PlotViewPlugin(PluginVisualize):
 
 
 
-__plugin__ = [PlotViewPlugin()]
+__plugins__ = [PlotViewPlugin()]
 __visual_plugins__ = [PlotViewPlugin]
 __import_plugins__ = []

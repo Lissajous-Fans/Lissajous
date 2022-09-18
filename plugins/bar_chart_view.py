@@ -38,5 +38,3 @@ class BarChartPlugin(PluginVisualize):
 
 
 __plugins__ = [BarChartPlugin()]
-__visual_plugins__ = [BarChartPlugin]
-__import_plugins__ = []

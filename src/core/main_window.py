@@ -7,16 +7,12 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QMainWindow, QAction, QMenu, QDockWidget)
 
-from src.api.plugins import PluginVisualize, PluginImport
+from src.api import PluginVisualize, PluginImport
 from .file_loader_dialog import FileLoaderDialog
 from .navigation_widget import NavigationWidget
 from .params_widget import ParamsWidget
 from .visualizing_widget import VisualizingWidget
 from .load_plugin import load_all as load_plugins
-
-PLUGINS_FOLDER = './plugins/'
-VISUAL_PLUGINS_CONTAINER = '__visual_plugins__'
-IMPORT_PLUGINS_CONTAINER = '__import_plugins__'
 
 
 class MainWindow(QMainWindow):
