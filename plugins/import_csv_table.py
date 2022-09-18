@@ -14,7 +14,7 @@ class ImportCsvTablePlugin(PluginImport):
         )
 
     def import_from(self, file_path: str, parameters: Plugin.OptionsValues) -> Optional[pd.DataFrame]:
-        return pd.read_csv(file_path)
+        return pd.read_csv(file_path, index_col=None, header=None)
 
 
 
