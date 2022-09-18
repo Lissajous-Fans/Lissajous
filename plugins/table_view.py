@@ -1,11 +1,12 @@
 import pandas as pd
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QTableView
+from src.api import PluginVisualize, Plugin, VisualizeType
+import pandas as pd
+from PyQt5.QtWidgets import QWidget, QTableView
+from PyQt5 import QtCore
 
-from src.api.plugins import PluginQtVisualize, Plugin, VisualizeType
-
-
-class PlotViewPlugin(PluginQtVisualize):
+class PlotViewPlugin(PluginVisualize):
     def __init__(self):
         super().__init__(
             "Table display",
@@ -58,6 +59,11 @@ class DataFrameModel(QtCore.QAbstractTableModel):
         return self._dataframe.columns.size
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
+        for i in range(len(self._dataframe.columns)):
+            for j in range(len(self._dataframe)):
+                if pd.isna(self._dataframe[i][j]):
+                    self._dataframe[i][j] = ''
+
         if not index.isValid() or not (0 <= index.row() < self.rowCount() and 0 <= index.column() < self.columnCount()):
             return QtCore.QVariant()
         row = self._dataframe.index[index.row()]
