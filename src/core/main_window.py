@@ -29,6 +29,7 @@ class MainWindow(QMainWindow):
         visual_plugins = self.load_plugins_by_type(VISUAL_PLUGINS_CONTAINER)
         for plugin in visual_plugins:
             self._plugins.append(plugin())
+        print(visual_plugins)
 
         import_plugins = self.load_plugins_by_type(IMPORT_PLUGINS_CONTAINER)
         for plugin in import_plugins:

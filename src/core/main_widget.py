@@ -4,15 +4,16 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QListWidget, QLabel
 
 from .plugins_widget import PluginsWidget
 from .params_widget import ParamsWidget
-from src.api.plugins import Plugin, PluginVisualize
+from src.api.plugins import Plugin, PluginQtVisualize
 
 
 class MainWidget(QWidget):
-    def __init__(self, data: pd.DataFrame, plugins: list[PluginVisualize] = None):
+    def __init__(self, data: pd.DataFrame, plugins: list[PluginQtVisualize] = None):
         super().__init__()
         self._data = data
         self._plugins = plugins or []
-        self._current_plugin: PluginVisualize | None = None
+        print(self._plugins)
+        self._current_plugin: PluginQtVisualize | None = None
         self._configure_ui()
 
     def _configure_ui(self):
@@ -28,7 +29,7 @@ class MainWidget(QWidget):
 
         self._params_label = QLabel('Параметры отрисовки')
         self.grid.addWidget(self._params_label, 0, 1)
-        self._params_widget = ParamsWidget([])
+        self._params_widget = ParamsWidget()
         self.grid.addWidget(self._params_widget, 1, 1, )
 
         self._image_label = QLabel()
@@ -41,9 +42,14 @@ class MainWidget(QWidget):
         self._params_widget.params_updated.connect(lambda: self._update_visual(self._current_plugin))
         self._update_visual(self._current_plugin)
 
-    def _update_visual(self, plugin: PluginVisualize):
-        buffer = plugin.visualize(self._data, self._params_widget.get_params())
-        self._image_label.setPixmap(QPixmap().loadFromData(buffer))
+    def _update_visual(self, plugin: PluginQtVisualize):
+        try:
+            self._image_label = plugin.visualize(self._data, self._params_widget.get_params())
+            print(self._image_label)
+            self._image_label.show()
+            self.grid.addWidget(self._image_label, 1, 2)
+        except KeyError as e:
+            print(f'KeyError: {e}')
 
     def set_pixmap(self, image: QPixmap):
         self._image_label.setPixmap(image)
