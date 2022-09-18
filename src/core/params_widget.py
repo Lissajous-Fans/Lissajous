@@ -28,11 +28,12 @@ from .param_group_widget import ParamGroupWidget
 
 
 class ColorInput(QPushButton):
+    valueChanged = pyqtSignal(QColor)
+
     def __init__(self, color: QColor, parent=None):
-        super().__init__(self, parent)
+        super().__init__("", parent)
         self.setAutoFillBackground(True)
         self.setColor(color)
-        self.valueChanged = pyqtSignal()
         self.clicked.connect(lambda: self.setColor(QColorDialog().getColor()))
 
     def setColor(self, color: QColor):
@@ -41,7 +42,7 @@ class ColorInput(QPushButton):
         pal.setColor(QPalette.Button, color)
         self.setPalette(pal)
         self.update()
-        self.valueChanged.emit()
+        self.valueChanged.emit(self.value())
 
     def value(self) -> QColor:
         return self.color

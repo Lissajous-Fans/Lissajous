@@ -54,8 +54,7 @@ class MapViewPlugin(PluginVisualize):
         self, data: DataFrame, parameters: Plugin.OptionsValues
     ) -> Tuple[QWidget, XMLTree]:
         et = ElementTree.parse("res/world.svg")
-        color = QColor(200, 0, 100) # parameters[self.param_color]
-        MapViewPlugin.paint_countries_one_color(data, QColor(255, 0, 0), et)
+        MapViewPlugin.paint_countries_one_color(data, parameters[self.param_color], et)
         temp_file = QTemporaryFile()
         temp_file.open()
         path = temp_file.fileName()
