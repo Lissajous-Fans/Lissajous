@@ -28,19 +28,14 @@ class FileLoaderDialog(QDialog):
         self._file_picker_button = QPushButton('Выбрать файл')
         self._file_picker_button.clicked.connect(self._handle_file_picking)
         self.grid.addWidget(self._file_picker_button, 1, 2, 1, 1)
-        self.ok_button = QPushButton('Подтвердить')
-        self.ok_button.clicked.connect(self._handle_ok)
-        self.grid.addWidget(self.ok_button, 2, 2)
-
-    def _handle_ok(self):
-        self.file_picked.emit(self._dataframe)
-        self.close()
 
     def _handle_file_picking(self):
         file = QFileDialog.getOpenFileName(self, 'Выбор файла', filter=';;'.join(self._plugin.supported_formats))[0]
         if file and (data := self._plugin.import_from(file, {})) is not None:
             self._dataframe = data
             self._pick_label.setText(f'Файл: {file}')
+            self.file_picked.emit(self._dataframe)
+            self.close()
         elif file:
             self.error.emit()
             self.close()
