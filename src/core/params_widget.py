@@ -65,6 +65,7 @@ class ParamsWidget(QWidget):
                     group.register_child(self._params_to_widget[sub_param])
 
     def drop_params(self):
+        print("Dropping params.")
         self._params = []
         self._params_to_widget.clear()
         self._params_to_value_getter.clear()

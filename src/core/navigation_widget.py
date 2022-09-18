@@ -4,8 +4,8 @@ import pandas as pd
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QModelIndex
 from PyQt5.QtWidgets import QLabel, QWidget, QVBoxLayout, QDockWidget, QListWidget, QListWidgetItem
 
-from core.plugin_item_widget import PluginItemWidget
-from core.plugins_widget import PluginsWidget
+from .plugin_item_widget import PluginItemWidget
+from .plugins_widget import PluginsWidget
 from src.api import PluginQtVisualize
 
 

@@ -86,6 +86,7 @@ class MainWindow(QMainWindow):
         return handler
 
     def _handle_plugin_picking(self, index: int):
+        self.params_widgets.drop_params()
         plugin = self._visual_plugins[index]
         self.params_widgets.set_params(plugin.parameters)
         self.visualizing_widget.set_plugin(plugin)
