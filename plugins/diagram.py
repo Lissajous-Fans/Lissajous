@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QModelIndex
 
-from lissapi import PluginQtVisualize, Plugin, VisualizeType
+from src.api import PluginQtVisualize, Plugin, VisualizeType
 import pandas as pd
 from PyQt5.QtWidgets import QWidget, QTableView
 from PyQt5 import QtCore
@@ -15,10 +15,12 @@ from PyQt5.QtCore import Qt
 class DiagramViewPlugin(PluginQtVisualize):
     def __init__(self):
         super().__init__(
-            "Table display",
+            "Pie Charm",
             "No description",
             VisualizeType.PieChart
         )
+
+    setExplodet = {}
 
     @staticmethod
     def handle_howered (slice, state):
@@ -26,28 +28,25 @@ class DiagramViewPlugin(PluginQtVisualize):
             slice.setExploded(True)
             slice.setLabelVisible(True)
         else:
-            slice.setExploded(False)
-            slice.setLabelVisible(False)
+            if not slice in DiagramViewPlugin.setExplodet:
+                slice.setExploded(False)
+                slice.setLabelVisible(False)
+    
+    @staticmethod
+    def handle_click (slice):
+        if slice in DiagramViewPlugin.setExplodet:
+            DiagramViewPlugin.setExplodet.pop(slice)
+            slice.setPen(QPen(Qt.white, 0))
+        else:
+            DiagramViewPlugin.setExplodet[slice] = 0
+            slice.setPen(QPen(Qt.black, 1))
 
     def visualize(self, data: DataFrame, params: Plugin.OptionsValues) -> QWidget:
         series = QPieSeries()
-        series.append("Python", 80)
-        series.append("C++", 70)
-        series.append("Java", 50)
-        series.append("C#", 40)
-        series.append("PHP", 30)
+        for rx in range(1, data.shape[0]):
+            series.append(data.iat[rx, 0], int(data.iat[rx, 1]))
         series.hovered.connect(DiagramViewPlugin.handle_howered)
-        
-        
-        slice = QPieSlice()
-        slice = series.slices()[2]
-        slice.setExploded(True)
-        slice.setLabelVisible(True)
-        slice.setPen(QPen(Qt.darkGreen, 2))
-        slice.setBrush(Qt.green)
- 
- 
- 
+        series.clicked.connect(DiagramViewPlugin.handle_click)
  
         chart = QChart()
         chart.legend().hide()

@@ -4,7 +4,7 @@ from PyQt5.QtGui import QColorConstants, QColor, QPen
 from PyQt5.QtWidgets import QWidget, QPushButton, QGraphicsSceneMouseEvent, QColorDialog
 from PyQt5.QtChart import QChart, QChartView, QLineSeries
 
-from lissapi import PluginVisualize, Plugin, VisualizeType, PluginOptionInt
+from src.api import PluginQtVisualize, Plugin, VisualizeType, PluginOptionInt
 
 
 class PlotViewPlugin(PluginVisualize):
