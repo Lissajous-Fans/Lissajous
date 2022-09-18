@@ -13,7 +13,7 @@ class BarChartPlugin(PluginVisualize):
         super().__init__(
             "Simple Bar Chart View",
             "Bar chart View.",
-            VisualizeType.LineGraph
+            VisualizeType.BarChart
         )
         self.param_x_min = PluginOptionInt("Left column", 1)
         self.param_x_max = PluginOptionInt("Right Column", 3)
