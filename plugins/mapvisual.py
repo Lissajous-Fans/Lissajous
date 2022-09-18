@@ -39,7 +39,7 @@ class MapView(PluginQtVisualize):
                     pass
 
     def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> QWidget:
-        et = xml.etree.ElementTree.parse('res\world.svg')
+        et = xml.etree.ElementTree.parse('res/world.svg')
         color = parameters[self.param_color]
         MapView.paintCountriesOneColor(data, QColor(255, 0, 0), et)
         et.write('res/snworld.svg')
