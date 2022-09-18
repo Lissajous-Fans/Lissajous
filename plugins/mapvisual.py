@@ -7,11 +7,15 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtSvg import QSvgWidget
 from pandas import DataFrame
 
-from src.api import PluginQtVisualize, Plugin, VisualizeType
+from src.api import PluginQtVisualize, Plugin, VisualizeType, PluginOptionColor
 
 class MapView(PluginQtVisualize):
     def __init__(self):
         super().__init__("Map View", "No description", VisualizeType.Map)
+        self.param_color = PluginOptionColor('Цвет градиента')
+        self.parameters.extend([
+            self.param_color
+        ])
     
     @staticmethod
     def paintCountry(id, color, svg_):
@@ -36,9 +40,10 @@ class MapView(PluginQtVisualize):
 
     def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> QWidget:
         et = xml.etree.ElementTree.parse('res\world.svg')
+        color = parameters[self.param_color]
         MapView.paintCountriesOneColor(data, QColor(255, 0, 0), et)
-        et.write('res\snworld.svg')
-        svg = QSvgWidget('res\snworld.svg')
+        et.write('res/snworld.svg')
+        svg = QSvgWidget('res/snworld.svg')
         return svg
 
 
