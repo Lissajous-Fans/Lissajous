@@ -13,13 +13,15 @@ class ImportPandasLikeTable(PluginImport):
         super().__init__(
             "Таблицу",
             "Загружает таблицу из файла произвольного расширения.",
-            supported_formats=['*.csv', '*.xls', '*.xlsx', '*.json', '*.xml']
+            supported_formats=['*', '*.csv', '*.xls', '*.xlsx', '*.json', '*.xml']
         )
 
     def import_from(self, file_path: str, parameters: Plugin.OptionsValues) -> Optional[DataFrame]:
         end = file_path.split('.')[-1]
         if f'read_{end}' in (d := importlib.import_module('pandas').__dict__):
             return d[f'read_{end}'](file_path)
+        elif end in ['xls', 'xlsx']:
+            return d['read_excel'](file_path)
         else:
             return None
 
