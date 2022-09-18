@@ -2,7 +2,7 @@ from typing import Optional
 
 import pandas as pd
 
-from api.plugins import PluginImport, Plugin
+from src.api.plugins import PluginImport, Plugin
 
 
 class ImportCsvTablePlugin(PluginImport):

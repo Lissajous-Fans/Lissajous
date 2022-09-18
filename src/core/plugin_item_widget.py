@@ -2,7 +2,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel
 
-from api.plugins import PluginVisualize
+from src.api.plugins import PluginVisualize
 
 
 class PluginItemWidget(QWidget):

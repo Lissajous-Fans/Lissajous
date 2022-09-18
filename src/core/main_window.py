@@ -6,9 +6,9 @@ from PyQt5 import uic
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QMainWindow, QAction, QMenuBar)
 
-from core.main_widget import MainWidget
+from .main_widget import MainWidget
 from src.api.plugins import PluginVisualize, PluginImport
-from src.core.file_loader_dialog import FileLoaderDialog
+from .file_loader_dialog import FileLoaderDialog
 
 PLUGINS_FOLDER = './plugins/'
 VISUAL_PLUGINS_CONTAINER = '__visual_plugins__'

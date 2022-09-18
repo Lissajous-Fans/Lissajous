@@ -2,8 +2,8 @@ import pandas as pd
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget, QGridLayout, QListWidget, QLabel
 
-from core.plugins_widget import PluginsWidget
-from src.core.params_widget import ParamsWidget
+from .plugins_widget import PluginsWidget
+from .params_widget import ParamsWidget
 from src.api.plugins import Plugin, PluginVisualize
 
 

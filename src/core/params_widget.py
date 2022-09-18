@@ -7,8 +7,8 @@ from src.api.plugins import (PluginOption,
                              PluginOptionGroup,
                              PluginOptionInt,
                              PluginOptionBool, PluginOptionString)
-from src.core.param_item_widget import ParamItemWidget
-from src.core.param_group_widget import ParamGroupWidget
+from .param_item_widget import ParamItemWidget
+from .param_group_widget import ParamGroupWidget
 
 
 def option_to_widget(option: PluginOption) -> tuple:

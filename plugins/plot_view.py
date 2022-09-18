@@ -4,8 +4,7 @@ from io import BytesIO
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 
-from api.plugins import Plugin, PluginOptionColor
-from src.api.plugins import PluginVisualize, VisualizeType, PluginOptionString
+from src.api.plugins import Plugin, PluginOptionColor, PluginVisualize, VisualizeType, PluginOptionString
 
 
 class PlotViewPlugin(PluginVisualize):
