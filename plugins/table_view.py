@@ -88,5 +88,4 @@ class DataFrameModel(QtCore.QAbstractTableModel):
         return roles
 
 
-__visual_plugins__ = [PlotViewPlugin]
-__import_plugins__ = []
+__plugin__ = [""]

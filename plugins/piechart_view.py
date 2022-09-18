@@ -51,5 +51,6 @@ class PieChartViewPlugin(PluginVisualize):
         return chartview
 
 
+__plugins__ = [PieChartViewPlugin()]
 __visual_plugins__ = [PieChartViewPlugin]
 __import_plugins__ = []

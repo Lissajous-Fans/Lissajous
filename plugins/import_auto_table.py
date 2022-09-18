@@ -24,5 +24,6 @@ class ImportPandasLikeTable(PluginImport):
             return None
 
 
+__plugins__ = [ImportPandasLikeTable()]
 __import_plugins__ = [ImportPandasLikeTable]
 __visual_plugins__ = []

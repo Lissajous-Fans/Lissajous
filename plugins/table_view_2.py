@@ -41,6 +41,6 @@ class TableViewPlugin(PluginVisualize):
         table_view.setModel(DataFrameWidget(data))
         return table_view
 
-
+__plugins__ = [TableViewPlugin()]
 __import_plugins__ = []
 __visual_plugins__ = [TableViewPlugin]

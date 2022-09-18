@@ -74,5 +74,6 @@ class MapView(PluginVisualize):
         return True
 
 
+__plugins__ = [MapView()]
 __import_plugins__ = []
 __visual_plugins__ = [MapView]
