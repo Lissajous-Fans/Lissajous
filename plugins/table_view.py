@@ -57,6 +57,11 @@ class DataFrameModel(QtCore.QAbstractTableModel):
         return self._dataframe.columns.size
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
+        for i in range(len(self._dataframe.columns)):
+            for j in range(len(self._dataframe)):
+                if pd.isna(self._dataframe[i][j]):
+                    self._dataframe[i][j] = ''
+
         if not index.isValid() or not (0 <= index.row() < self.rowCount() and 0 <= index.column() < self.columnCount()):
             return QtCore.QVariant()
         row = self._dataframe.index[index.row()]
