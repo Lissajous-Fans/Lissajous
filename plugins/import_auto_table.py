@@ -4,7 +4,7 @@ from typing import Optional
 
 from pandas import DataFrame
 
-from api import Plugin
+from src.api import Plugin
 from src.api import PluginImport
 
 
