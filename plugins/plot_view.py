@@ -1,38 +1,22 @@
-import io
-from io import BytesIO
+import pandas as pd
+from PyQt5.QtCore import QPointF
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QWidget, QPushButton
+from PyQt5.QtChart import QChart, QChartView, QLineSeries
 
-from matplotlib import pyplot as plt
-from pandas import DataFrame
-
-from src.api.plugins import Plugin, PluginOptionColor, PluginVisualize, VisualizeType, PluginOptionString
+from api.plugins import PluginQtVisualize, Plugin, VisualizeType
 
 
-class PlotViewPlugin(PluginVisualize):
+class PlotViewPlugin(PluginQtVisualize):
     def __init__(self):
         super().__init__(
-            "Plot View",
-            "Draw plot.",
-            VisualizeType.LineGraph,
+            "Simple Line Graph View",
+            "Line Graph View.",
+            VisualizeType.LineGraph
         )
-        self.option_x = PluginOptionString('X')
-        self.option_y = PluginOptionString('Y')
-        self.option_line_color = PluginOptionColor('Цвет графика')
-        self.parameters.extend([
-            self.option_x,
-            self.option_y,
-            self.option_line_color
-        ])
 
-    def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> BytesIO:
-        print(parameters)
-        plt.plot(
-            parameters[self.option_x],
-            parameters[self.option_y],
-            parameters[self.option_line_color]
-        )
-        buffer = io.BytesIO()
-        plt.savefig(buffer, format='PNG')
-        return buffer
+    def visualize(self, data: pd.DataFrame, params: Plugin.OptionsValues) -> QWidget:
+        return QPushButton('asfdf')
 
 
 __visual_plugins__ = [PlotViewPlugin]
