@@ -27,7 +27,6 @@ class MapView(PluginVisualize):
     def fill_country(id, color, svg):
         elm = svg.find(f".//*[@id='{id}']")
         elm.attrib["fill"] = f"{color}"
-        elm.attrib["style"] = ""
 
     @staticmethod
     def paint_countries_one_color(sales, color, svg):
