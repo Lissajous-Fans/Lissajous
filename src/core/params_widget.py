@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QWidget, QListWidget, QListWidgetItem, QSpinBox, QLi
 from src.api.plugins import (PluginOption,
                              PluginOptionGroup,
                              PluginOptionInt,
-                             PluginOptionBool, PluginOptionString)
+                             PluginOptionBool, PluginOptionString, PluginOptionColor)
 from .param_item_widget import ParamItemWidget
 from .param_group_widget import ParamGroupWidget
 
@@ -25,17 +25,25 @@ def option_to_widget(option: PluginOption) -> tuple:
         case x if isinstance(option, PluginOptionString):
             w = QLineEdit()
             return w, w.textChanged, w.text
+        case x if isinstance(option, PluginOptionColor):
+            w = QLineEdit()
+            return w, w.textChanged, w.text
+        case _:
+            print(type_to_match)
 
 
 class ParamsWidget(QListWidget):
     params_updated = pyqtSignal()
 
-    def __init__(self, params: list[PluginOption | PluginOptionGroup]):
+    def __init__(self, params: list[PluginOption | PluginOptionGroup] = None):
         super().__init__()
-        self._params = params
+        self._params = params or []
         self._params_to_widget = {}
         self._params_to_value_getter = {}
         self._configure_ui()
+
+    def _configure_ui(self):
+        self.load_params(self._params)
 
     def drop_params(self):
         self._params = []
@@ -43,10 +51,8 @@ class ParamsWidget(QListWidget):
         self._params_to_value_getter.clear()
         self.clear()
 
-    def _configure_ui(self):
-        self.load_params(self._params)
-
     def load_params(self, params: list[PluginOption | PluginOptionGroup]):
+        self._params = params
         for param in params:
             if isinstance(param, PluginOption):
                 self._fast_add_param(param)

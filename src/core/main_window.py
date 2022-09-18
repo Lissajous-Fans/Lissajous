@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
         visual_plugins = self.load_plugins_by_type(VISUAL_PLUGINS_CONTAINER)
         for plugin in visual_plugins:
             self._plugins.append(plugin())
+        print(visual_plugins)
 
         import_plugins = self.load_plugins_by_type(IMPORT_PLUGINS_CONTAINER)
         for plugin in import_plugins:
@@ -46,7 +47,7 @@ class MainWindow(QMainWindow):
         result = []
         for file in files:
             if file.endswith('.py'):
-                result.extend(importlib.import_module(f'plugins.{file.rstrip(".py")}').__dict__[plugin_type])
+                result.extend(importlib.import_module(f'plugins.{file.removesuffix(".py")}').__dict__[plugin_type])
         return result
 
     def _handle_file_picking(self, data: pd.DataFrame):
