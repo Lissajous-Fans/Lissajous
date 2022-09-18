@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtSvg import QSvgWidget
 from pandas import DataFrame
 
-from lissapi import PluginQtVisualize, Plugin, VisualizeType, PluginOptionColor
+from src.api import PluginQtVisualize, Plugin, VisualizeType, PluginOptionColor
 
 class MapView(PluginQtVisualize):
     def __init__(self):

@@ -2,7 +2,7 @@ from typing import Optional
 
 import pandas as pd
 
-from lissapi import PluginImport, Plugin
+from src.api import PluginImport, Plugin
 
 
 class ImportFromExcelFile(PluginImport):
