@@ -5,10 +5,10 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QGraphicsSceneMouseEvent, QCol
 from PyQt5.QtChart import QChart, QChartView, QLineSeries
 import pyqtgraph as pg
 
-from src.api import PluginQtVisualize, Plugin, VisualizeType, PluginOptionInt
+from src.api import PluginVisualize, Plugin, VisualizeType, PluginOptionInt
 
 
-class BarChartPlugin(PluginQtVisualize):
+class BarChartPlugin(PluginVisualize):
     def __init__(self):
         super().__init__(
             "Simple Bar Chart View",

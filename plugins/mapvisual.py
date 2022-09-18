@@ -17,7 +17,7 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtSvg import QSvgWidget
 from PyQt5.QtWidgets import QWidget
 
-from src.api import PluginQtVisualize, Plugin, VisualizeType, PluginOptionColor
+from src.api import PluginVisualize, Plugin, VisualizeType, PluginOptionColor
 
 class MapView(PluginVisualize):
     def __init__(self):

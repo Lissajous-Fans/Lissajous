@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QModelIndex
 
-from src.api import PluginQtVisualize, Plugin, VisualizeType
+from src.api import PluginVisualize, Plugin, VisualizeType
 import pandas as pd
 from PyQt5.QtWidgets import QWidget, QTableView
 from PyQt5 import QtCore
@@ -12,7 +12,7 @@ from PyQt5.QtChart import QChart, QChartView, QPieSeries, QPieSlice
 from PyQt5.QtGui import QPainter, QPen
 from PyQt5.QtCore import Qt
 
-class DiagramViewPlugin(PluginQtVisualize):
+class DiagramViewPlugin(PluginVisualize):
     def __init__(self):
         super().__init__(
             "Pie Charm",
