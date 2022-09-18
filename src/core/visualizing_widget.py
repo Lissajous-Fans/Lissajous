@@ -21,6 +21,8 @@ class VisualizingWidget(QWidget):
     def visualize(self, data: pd.DataFrame):
         try:
             self.widget = self._plugin.visualize(data, self._params)
+            if isinstance(self.widget, tuple):
+                self.widget = self.widget[0]
             self.layout().addWidget(self.widget, 0, 0)
         except Exception as e:
             print(e)

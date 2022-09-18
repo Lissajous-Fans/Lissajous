@@ -1,7 +1,6 @@
 from xml.etree import ElementTree
 from xml.etree.ElementTree import ElementTree as XMLTree
 
-import pandas as pd
 import pycountry
 from lissapi import (
     Plugin,
@@ -12,18 +11,17 @@ from lissapi import (
 )
 from pandas import DataFrame
 from typing import Tuple
-from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 from PyQt5.QtSvg import QSvgWidget
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import QTemporaryFile, Qt
 
-from src.api import PluginVisualize, Plugin, VisualizeType, PluginOptionColor
 
 class MapView(PluginVisualize):
     def __init__(self):
-        super().__init__("Map View", "No description", VisualizeType.Map, [".svg"])
+        super().__init__("Map View", "No description", VisualizeType.Map, ["*.svg"])
         self.param_color = PluginOptionColor("Gradient Color")
-        self.parameters.extend([self.param_color])
+        # self.parameters.extend([self.param_color])
 
     @staticmethod
     def fill_country(id, color, svg):
@@ -56,11 +54,14 @@ class MapView(PluginVisualize):
         self, data: DataFrame, parameters: Plugin.OptionsValues
     ) -> Tuple[QWidget, XMLTree]:
         et = ElementTree.parse("res/world.svg")
-        color = parameters[self.param_color]
+        color = QColor(200, 0, 100) # parameters[self.param_color]
         MapView.paint_countries_one_color(data, QColor(255, 0, 0), et)
-        temp_file = QtCore.QTemporaryFile()
-        et.write(temp_file.fileName())
-        svg = QSvgWidget(temp_file.fileName())
+        temp_file = QTemporaryFile()
+        temp_file.open()
+        path = temp_file.fileName()
+        et.write(path)
+        svg = QSvgWidget(path)
+        svg.renderer().setAspectRatioMode(Qt.KeepAspectRatio)
         return (svg, et)
 
     def export_to(

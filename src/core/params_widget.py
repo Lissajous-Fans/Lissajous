@@ -1,14 +1,50 @@
 # TODO: Аннотации типов API
 
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget, QListWidget, QListWidgetItem, QSpinBox, QLineEdit, QVBoxLayout, QLabel, QDockWidget
+from PyQt5.QtWidgets import (
+    QWidget,
+    QListWidget,
+    QListWidgetItem,
+    QSpinBox,
+    QLineEdit,
+    QVBoxLayout,
+    QLabel,
+    QDockWidget,
+    QPushButton,
+    QColorDialog,
+)
+from PyQt5.QtGui import QColor, QPalette
 
-from src.api.plugins import (PluginOption,
-                             PluginOptionGroup,
-                             PluginOptionInt,
-                             PluginOptionBool, PluginOptionString, PluginOptionColor)
+from src.api.plugins import (
+    PluginOption,
+    PluginOptionGroup,
+    PluginOptionInt,
+    PluginOptionBool,
+    PluginOptionString,
+    PluginOptionColor,
+)
 from .param_item_widget import ParamItemWidget
 from .param_group_widget import ParamGroupWidget
+
+
+class ColorInput(QPushButton):
+    def __init__(self, color: QColor, parent=None):
+        super().__init__(self, parent)
+        self.setAutoFillBackground(True)
+        self.setColor(color)
+        self.valueChanged = pyqtSignal()
+        self.clicked.connect(lambda: self.setColor(QColorDialog().getColor()))
+
+    def setColor(self, color: QColor):
+        self.color = color
+        pal = self.palette()
+        pal.setColor(QPalette.Button, color)
+        self.setPalette(pal)
+        self.update()
+        self.valueChanged.emit()
+
+    def value(self) -> QColor:
+        return self.color
 
 
 def option_to_widget(option: PluginOption) -> tuple:
@@ -26,8 +62,10 @@ def option_to_widget(option: PluginOption) -> tuple:
             w = QLineEdit()
             return w, w.textChanged, w.text
         case x if isinstance(option, PluginOptionColor):
-            w = QLineEdit()
-            return w, w.textChanged, w.text
+            w = ColorInput(option.default_value)
+            return w, w.valueChanged, w.value
+        case x if isinstance(option, PluginOptionFloat):
+            pass
         case _:
             print(type_to_match)
 
@@ -53,9 +91,12 @@ class ParamsWidget(QWidget):
         self.adjustSize()
 
     def set_params(self, params: list[PluginOption | PluginOptionGroup]):
+        assert isinstance(PluginOptionColor("name", QColor()), PluginOption)
         self._params = params
         for param in self._params:
+            print(param)
             if isinstance(param, PluginOption):
+                print(2)
                 self._fast_add_param(param)
             elif isinstance(param, PluginOptionGroup):
                 group = ParamGroupWidget(param.name)
@@ -72,6 +113,8 @@ class ParamsWidget(QWidget):
         self.list.clear()
 
     def get_params(self):
+        print(self._params)
+        print(self._params_to_value_getter)
         return {param: self._params_to_value_getter[param]() for param in self._params}
 
     def _handle_param_updating(self, *args, **kwargs):
@@ -89,4 +132,3 @@ class ParamsWidget(QWidget):
         item = QListWidgetItem(self.list)
         item.setSizeHint(widget.sizeHint())
         self.list.setItemWidget(item, widget)
-
