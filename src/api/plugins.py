@@ -128,7 +128,7 @@ class PluginVisualize(Plugin):
         self.visualize_type = visualize_type
 
     @abc.abstractmethod
-    def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> BytesIO:
+    def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> Optional[BytesIO]:
         pass
 
 
@@ -140,5 +140,5 @@ class PluginQtVisualize(Plugin):
         self.visualize_type = visualize_type
 
     @abc.abstractmethod
-    def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> QWidget:
+    def visualize(self, data: DataFrame, parameters: Plugin.OptionsValues) -> Optional[QWidget]:
         pass
