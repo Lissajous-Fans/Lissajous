@@ -12,7 +12,7 @@ class ImportPandasLikeTable(PluginImport):
         super().__init__(
             "Таблицу",
             "Загружает таблицу из файла произвольного расширения.",
-            supported_formats=['*', '*.csv', '*.xls', '*.xlsx', '*.json', '*.xml']
+            supported_formats=['*.csv', '*.xls', '*.xlsx', '*.json', '*.xml']
         )
 
     def import_from(self, file_path: str, parameters: Plugin.OptionsValues) -> Optional[DataFrame]:
