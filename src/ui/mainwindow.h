@@ -1,4 +1,5 @@
 #pragma once
+#include <QDockWidget>
 #include <QMainWindow>
 #include <QMenu>
 
@@ -7,6 +8,10 @@ public:
     MainWindow();
 
 private:
+    QDockWidget *dock_view_choose = new QDockWidget(tr("View"), this);
+    QDockWidget *dock_parameters = new QDockWidget(tr("Parameters"), this);
+
     void buildMenuBar();
-    void openFile(const QString& path);
+    void buildUI();
+    void openFile(const QString &path);
 };

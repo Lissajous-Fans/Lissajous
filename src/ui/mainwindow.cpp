@@ -2,43 +2,38 @@
 
 #include <QApplication>
 #include <QFileDialog>
-#include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
 
 MainWindow::MainWindow() {
     buildMenuBar();
+    buildUI();
 }
 
 void MainWindow::buildMenuBar() {
-    auto* menu_files = menuBar()->addMenu(tr("&File"));
-    auto* menu_help = menuBar()->addMenu(tr("&Help"));
+    auto *menu_files = menuBar()->addMenu(tr("&File"));
+    auto *menu_docks = menuBar()->addMenu(tr("&Docks"));
+    auto *menu_help = menuBar()->addMenu(tr("&Help"));
 
-    auto* action_open = menu_files->addAction(QIcon::fromTheme("document-open"), tr("&Open..."));
-    auto* menu_recent = menu_files->addMenu(QIcon::fromTheme("document-open-recent"), tr("&Recent"));
-    auto* action_export = menu_files->addAction(QIcon::fromTheme("file-export"), tr("&Export"));
+    menu_files->addAction(
+        QIcon::fromTheme("document-open"), tr("&Open..."),
+        [this] { openFile(QFileDialog::getOpenFileName(this, tr("Choose File"), QDir::homePath())); },
+        QKeySequence::Open);
+    menu_files->addMenu(QIcon::fromTheme("document-open-recent"), tr("&Recent"));
+    menu_files->addAction(QIcon::fromTheme("file-export"), tr("&Export"));
     menu_files->addSeparator();
-    auto* action_quit = menu_files->addAction(QIcon::fromTheme("application-exit"), tr("&Quit"));
+    menu_files->addAction(QIcon::fromTheme("application-exit"), tr("&Quit"), &QApplication::quit, QKeySequence::Quit);
 
-    auto* action_about = menu_help->addAction(QIcon(":/app-icon.png"), tr("&About Lissajous"));
-    auto* action_license = menu_help->addAction(QIcon("text-x-copying"), tr("License"));
-    auto* action_about_qt = menu_help->addAction(QIcon::fromTheme("qt"), tr("About Qt"));
+    menu_docks->addActions({ dock_view_choose->toggleViewAction(), dock_parameters->toggleViewAction() });
 
-    action_open->setShortcut(QKeySequence::Open);
-    action_quit->setShortcut(QKeySequence::Quit);
-
-    connect(action_open, &QAction::triggered,
-        [this] { openFile(QFileDialog::getOpenFileName(this, tr("Choose File"), QDir::homePath())); });
-    connect(action_quit, &QAction::triggered, qApp, &QApplication::quit, Qt::QueuedConnection);
-
-    connect(action_about, &QAction::triggered, [this] {
+    menu_help->addAction(QIcon(":/app-icon.png"), tr("&About Lissajous"), [this] {
         QFile f(":/about/ABOUT.html");
         f.open(QFile::ReadOnly);
-        auto html = f.readAll();
+        const auto html = f.readAll();
         QMessageBox::about(this, tr("About Lissajous"), html);
         f.close();
     });
-    connect(action_license, &QAction::triggered, [this] {
+    menu_help->addAction(QIcon("text/x-copying"), tr("License"), [this] {
         QFile f(":/about/LICENSE");
         f.open(QFile::ReadOnly);
         QByteArray text = f.readLine();
@@ -50,11 +45,16 @@ void MainWindow::buildMenuBar() {
                 text.append('\n');
             text.append(line);
         }
-        QMessageBox::about(this, tr("RayMarcher License"), text);
+        QMessageBox::about(this, tr("Lissajous License"), text);
         f.close();
     });
-    connect(action_about_qt, &QAction::triggered, &QApplication::aboutQt);
+    menu_help->addAction(QIcon::fromTheme("qt"), tr("About Qt"), &QApplication::aboutQt);
 }
 
-void MainWindow::openFile(const QString& path) {
+void MainWindow::buildUI() {
+    addDockWidget(Qt::LeftDockWidgetArea, dock_view_choose);
+    addDockWidget(Qt::RightDockWidgetArea, dock_parameters);
+}
+
+void MainWindow::openFile(const QString &path) {
 }
