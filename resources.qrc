@@ -4,5 +4,6 @@
   </qresource>
   <qresource prefix="/about">
       <file>LICENSE</file>
+      <file alias="ABOUT.html">res/ABOUT.html</file>
   </qresource>
 </RCC>

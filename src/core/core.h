@@ -1,9 +1,13 @@
 #pragma once
-#include <QSet>
+
+#include "lissapi/interface.h"
+
+#include <QMap>
 #include <QWidget>
 
 namespace Core {
 
-const QSet<QString> &openableFiletypes();
+const QMap<QString, QVector<LissAPI::ImportInterface *>>& openableFiletypes();
+const QVector<LissAPI::ViewInterface *>& viewPlugins();
 void loadPlugins();
 } // namespace Core

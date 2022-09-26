@@ -13,5 +13,5 @@ class HelloWorldPlugin : public QObject, public LissAPI::ViewInterface {
     Q_INTERFACES(LissAPI::ViewInterface);
 
 public:
-    QWidget *visualize(const LissAPI::Data &data) override;
+    QWidget *visualize(const LissAPI::Data &data) const override;
 };

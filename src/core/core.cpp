@@ -2,34 +2,48 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QMap>
 #include <QPluginLoader>
 
 #include "lissapi/interface.h"
 
 namespace Core {
-QSet<QString> openable_filetypes = {};
+QMap<QString, QVector<LissAPI::ImportInterface *>> openable_filetypes = {};
+QVector<LissAPI::ViewInterface *> view_plugins = {};
 
-const QSet<QString> &openableFiletypes() {
+const QMap<QString, QVector<LissAPI::ImportInterface *>>& openableFiletypes() {
     return openable_filetypes;
 }
 
-static void loadPlugin(QObject *plugin) {
+const QVector<LissAPI::ViewInterface *>& viewPlugins() {
+    return view_plugins;
+}
+
+void loadPlugin(QObject *plugin, const QJsonObject& metadata) {
     qDebug() << "Loading plugin: " << plugin;
+    auto *base_plugin = dynamic_cast<LissAPI::BaseInterface *>(plugin);
+    base_plugin->_metadata = metadata["MetaData"].toObject();
+
     auto *import_plugin = qobject_cast<LissAPI::ImportInterface *>(plugin);
     if (import_plugin != nullptr) {
-        qInfo() << "Loading import plugin: " << import_plugin;
+        for (const auto filetypes = import_plugin->filetypes(); const auto &ft : filetypes) {
+            if (!openable_filetypes.contains(ft))
+                openable_filetypes[ft] = QVector<LissAPI::ImportInterface *> { import_plugin };
+            else
+                openable_filetypes[ft].push_back(import_plugin);
+        }
     }
 
     auto *view_plugin = qobject_cast<LissAPI::ViewInterface *>(plugin);
     if (view_plugin != nullptr) {
-        // ...
+        qDebug() << "Is View Plugin";
+        view_plugins.append(view_plugin);
     }
 }
 
 void loadPlugins() {
-    const auto static_instances = QPluginLoader::staticInstances();
-    for (auto *plugin : static_instances) {
-        loadPlugin(plugin);
+    for (const auto static_plugins = QPluginLoader::staticPlugins(); const auto& plugin : static_plugins) {
+        loadPlugin(plugin.instance(), plugin.metaData());
     }
 
     auto plugins_dir = QDir(QApplication::applicationDirPath());
@@ -38,7 +52,7 @@ void loadPlugins() {
         QPluginLoader loader(plugins_dir.absoluteFilePath(plugin_path));
         auto *plugin = loader.instance();
         if (plugin != nullptr) {
-            loadPlugin(plugin);
+            loadPlugin(plugin, loader.metaData());
         }
     }
 }

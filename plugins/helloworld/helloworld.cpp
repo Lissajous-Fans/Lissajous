@@ -2,6 +2,6 @@
 
 #include <QLabel>
 
-QWidget *HelloWorldPlugin::visualize(const LissAPI::Data & /*data*/) {
+QWidget *HelloWorldPlugin::visualize(const LissAPI::Data & /*data*/) const {
     return new QLabel("Hello World!");
 }
